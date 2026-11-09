@@ -1,0 +1,72 @@
+#include <iostream>
+#include <array>
+#include <string>
+#include <fstream>
+#include <ctime>
+using namespace std;
+
+// Un estudiante: nombre, anio de nacimiento y promedio (GPA)
+struct Estudiante {
+    string nombre;
+    int nacimiento;
+    float gpa;
+};
+
+int main()
+{
+    // Se crea el archivo datos.txt con los datos del enunciado
+    ofstream salida("datos.txt");
+    salida << "Pedro 2005 3.3" << endl;
+    salida << "Cristobal 2002 2.5" << endl;
+    salida << "Gabriel 2005 3.4" << endl;
+    salida << "Sebastian 2000 3.6" << endl;
+    salida.close();
+
+    // Inicializacion con solo 2 estudiantes
+    array<Estudiante, 10> est = { { { "Juan", 2000, 3.4f },
+                                    { "Maria", 2005, 2.8f } } };
+
+    // 1. Tercer y cuarto elemento: datos ingresados desde el teclado
+    for (auto it = est.begin() + 2; it != est.begin() + 4; ++it) {
+        cout << "Ingrese nombre, nacimiento y gpa: ";
+        cin >> it->nombre >> it->nacimiento >> it->gpa;
+    }
+
+    // 2. Quinto y sexto elemento: datos de arrays basicos
+    string nombres[] = { "Gaby", "Patty", "Diana" };
+    int nacimientos[] = { 2002, 2004, 2006 };
+    float gps[] = { 3.8f, 3.0f, 2.9f };
+    // solo caben 2 (posiciones 5 y 6), los otros 4 vienen del archivo
+    int j = 0;
+    for (auto it = est.begin() + 4; it != est.begin() + 6; ++it) {
+        it->nombre = nombres[j];
+        it->nacimiento = nacimientos[j];
+        it->gpa = gps[j];
+        j++;
+    }
+
+    // 3. Elementos restantes: datos del archivo datos.txt
+    ifstream archivo("datos.txt");
+    if (!archivo) {
+        cout << "No se pudo abrir datos.txt" << endl;
+        return 1;
+    }
+    for (auto it = est.begin() + 6; it != est.end(); ++it)
+        archivo >> it->nombre >> it->nacimiento >> it->gpa;
+    archivo.close();
+
+    // 4. Imprimir todos con la edad actual y si califica a beca (GPA >= 3.5)
+    time_t t = time(nullptr);
+    int anioActual = localtime(&t)->tm_year + 1900;
+
+    cout << endl << "Nombre\tNacimiento\tEdad\tGPA\tBeca" << endl;
+    for (auto it = est.begin(); it != est.end(); ++it) {
+        cout << it->nombre << "\t"
+             << it->nacimiento << "\t\t"
+             << anioActual - it->nacimiento << "\t"
+             << it->gpa << "\t"
+             << (it->gpa >= 3.5 ? "Si" : "No") << endl;
+    }
+
+    return 0;
+}
