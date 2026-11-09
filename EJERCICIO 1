@@ -1,0 +1,38 @@
+#include <iostream>
+#include <array>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    array<int, 20> ar = { 37, 25, 49, 21, 43,
+                          67, 53, 91, 59, 75, 51, 83, 61, 99, 71,
+                          13, 3, 17, 9, 5 };
+
+    cout << "Todos los elementos: ";
+    for (auto it = ar.begin(); it != ar.end(); ++it)
+        cout << *it << " ";
+    cout << endl;
+
+
+    cout << "Mayores de 20 y menores de 50: ";
+    for (auto it = ar.begin(); it != ar.end(); ++it)
+        if (*it > 20 && *it < 50)
+            cout << *it << " ";
+    cout << endl;
+
+    
+    sort(ar.begin(), ar.end());
+    cout << "Ordenados: ";
+    for (auto it = ar.begin(); it != ar.end(); ++it)
+        cout << *it << " ";
+    cout << endl;
+
+    
+    cout << "Indices impares menores de 10: ";
+    for (auto it = ar.begin() + 1; it < ar.begin() + 10; it += 2)
+        cout << *it << " ";
+    cout << endl;
+
+    return 0;
+}
